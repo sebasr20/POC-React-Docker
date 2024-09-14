@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  app:
+    image: node:20.12.0-alpine
+    volumes:
+      - ./:/app
+      - /app/node_modules  # Evitar sincronizar node_modules del host
+    working_dir: /app
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development  # Definir entorno como desarrollo
+      - CHOKIDAR_USEPOLLING=true  # Habilitar polling en Docker para detectar cambios
+    stdin_open: true  # Mantiene el contenedor abierto
+    tty: true         # Mantiene la consola interactiva
+    command: sh -c "apk add --no-cache git && npm install && npm start"
+
